@@ -9,18 +9,18 @@ import Result from './Result';
 
 const ReviewStep = ({ title, words, onBack, onNext }) => (
   <div className="text-center">
-    <h2 className="mdc-typography--headline6 mb-4">Review: {title}</h2>
+    <h2 className=" mb-4">Review: {title}</h2>
     <ul className="bg-white shadow rounded p-4 mb-6 space-y-1 text-left max-w-md mx-auto">
       {words.map((word, i) => (
         <li key={i} className="p-1 border-b last:border-none">{word}</li>
       ))}
     </ul>
     <div className="flex justify-center gap-4">
-      <button className="mdc-button" onClick={onBack}>
-        <span className="mdc-button__label">Back to Step</span>
+      <button className="" onClick={onBack}>
+        <span className="">Back to Step</span>
       </button>
-      <button className="mdc-button mdc-button--raised" onClick={onNext}>
-        <span className="mdc-button__label">Next</span>
+      <button className=" --raised" onClick={onNext}>
+        <span className="">Next</span>
       </button>
     </div>
   </div>
@@ -37,13 +37,19 @@ const WelcomeScreen = ({ onStart }) => {
     }
     localStorage.setItem('userName', name);
     localStorage.setItem('userEmail', email);
+    
+    fetch('https://script.google.com/macros/s/AKfycbx24MLWZAOp6tSpHBEovq9irvUib8tRRsKYz6csLyOKiStxNIKjGc3vPak5Drol6PSi6g/exec', {
+      method: 'POST',
+      body: JSON.stringify({ name, email, event: 'started' }),
+      headers: { 'Content-Type': 'application/json' },
+    });
     onStart();
   };
 
   return (
     <div className="text-center">
-      <h1 className="mdc-typography--headline4 mb-4">Brand Characteristics Exercise</h1>
-      <p className="mdc-typography--body1 mb-4 max-w-md mx-auto">
+      <h1 className=" mb-4">Brand Characteristics Exercise</h1>
+      <p className=" mb-4 max-w-md mx-auto">
         The goal of this exercise is to narrow your list of potential attributes so you can better understand who you are as a brand.
       </p>
       <div className="mb-4">
@@ -62,8 +68,8 @@ const WelcomeScreen = ({ onStart }) => {
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
-      <button className="mdc-button mdc-button--raised" onClick={handleStart}>
-        <span className="mdc-button__label">Let's Get Started</span>
+      <button className=" --raised" onClick={handleStart}>
+        <span className="">Let's Get Started</span>
       </button>
       <p className="mt-2 text-xs text-gray-500 max-w-md mx-auto">
         By continuing, you agree to let our team contact you with marketing and update emails.
@@ -112,7 +118,7 @@ const WordPreferenceApp = () => {
   );
 
   return (
-    <div className="mdc-typography" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '1rem' }}>
+    <div className="" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '1rem' }}>
       <div className="w-full max-w-2xl">
         {step === 0 && <WelcomeScreen onStart={() => setStep(1)} />}
         {step === 1 && <StepOne onComplete={handleStepOneComplete} />}

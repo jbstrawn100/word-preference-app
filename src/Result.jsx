@@ -15,7 +15,7 @@ const Result = ({ selectedWords, hideEmailInput }) => {
 
   return (
     <div className="text-center max-w-xl mx-auto">
-      <h2 className="mdc-typography--headline6 mb-4">Your Results</h2>
+      <h2 className=" mb-4">Your Results</h2>
       <div className="space-y-2 mb-6">
         {selectedWords.map((word, i) => (
           <div key={i} className={`p-2 rounded ${i < 7 ? 'bg-green-100 font-bold' : 'bg-gray-50'}`}>
@@ -29,8 +29,8 @@ const Result = ({ selectedWords, hideEmailInput }) => {
           <input className="mb-4 w-full p-2 border rounded" placeholder="Email" />
         </>
       ) : null}
-      <button className="mdc-button mdc-button--raised" onClick={handleDownload}>
-        <span className="mdc-button__label">Download Results</span>
+      <button className=" --raised" onClick={handleDownload}>
+        <span className="">Download Results</span>
       </button>
     </div>
   );

@@ -34,7 +34,7 @@ const StepOneReview = ({ responses, onBack, onNext }) => {
 
   return (
     <div className="text-center">
-      <h2 className="mdc-typography--headline6 mb-4">Review & Adjust Step 1 Selections</h2>
+      <h2 className=" mb-4">Review & Adjust Step 1 Selections</h2>
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="flex gap-4 mb-6">
           {Object.entries(columnLabels).map(([key, label]) => (
@@ -45,7 +45,7 @@ const StepOneReview = ({ responses, onBack, onNext }) => {
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  <h3 className="mdc-typography--subtitle1 mb-2 text-center">{label}</h3>
+                  <h3 className=" mb-2 text-center">{label}</h3>
                   {updatedResponses[key].map((word, index) => (
                     <Draggable key={word} draggableId={word} index={index}>
                       {(provided) => (
@@ -68,11 +68,11 @@ const StepOneReview = ({ responses, onBack, onNext }) => {
         </div>
       </DragDropContext>
       <div className="flex justify-center gap-4">
-        <button onClick={onBack} className="mdc-button">
-          <span className="mdc-button__label">Back</span>
+        <button onClick={onBack} className="">
+          <span className="">Back</span>
         </button>
-        <button onClick={() => onNext(updatedResponses)} className="mdc-button mdc-button--raised">
-          <span className="mdc-button__label">Confirm and Continue</span>
+        <button onClick={() => onNext(updatedResponses)} className=" --raised">
+          <span className="">Confirm and Continue</span>
         </button>
       </div>
     </div>
