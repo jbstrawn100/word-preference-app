@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 
-const StepOne = ({ onComplete }) => {
-  const allWords = ["Adventurous", "Bold", "Daring", "Risk-taking", "Edgy", "Experimental",
+const WORDS = [
+  "Adventurous", "Bold", "Daring", "Risk-taking", "Edgy", "Experimental",
   "Energetic", "Disruptive", "Visionary", "Curious", "Safe", "Reliable",
   "Cautious", "Stable", "Secure", "Predictable", "Consistent", "Steady",
   "Traditional", "Conservative", "Approachable", "Friendly", "Warm",
@@ -18,44 +19,36 @@ const StepOne = ({ onComplete }) => {
   "Articulate", "Complex", "Thoughtful", "Analytical", "Logical",
   "Thorough", "Meticulous", "Technical", "Minimalist", "Clean",
   "Streamlined", "Simple", "Modern", "Intuitive", "Essential", "Quiet",
-  "Balanced", "Clear"];
-  const [responses, setResponses] = useState({ yes: [], maybe: [], no: [] });
+  "Balanced", "Clear"
+];
 
-  const handleSelection = (word, category) => {
-    setResponses(prev => {
-      const newResponses = { yes: [], maybe: [], no: [] };
-      for (const cat in prev) {
-        newResponses[cat] = prev[cat].filter(w => w !== word);
-      }
-      newResponses[category].push(word);
-      return newResponses;
-    });
+const StepOne = ({ onComplete }) => {
+  const [index, setIndex] = useState(0);
+  const [answers, setAnswers] = useState({ yes: [], maybe: [], no: [] });
+
+  const handleAnswer = (type) => {
+    const word = WORDS[index];
+    setAnswers((prev) => ({
+      ...prev,
+      [type]: [...prev[type], word],
+    }));
+    if (index + 1 < WORDS.length) {
+      setIndex(index + 1);
+    } else {
+      onComplete(answers);
+    }
   };
 
   return (
     <div className="text-center">
-      <h2 className="mdc-typography--headline6 mb-4">Step 1: Initial Selection</h2>
-      <div className="space-y-4">
-        {allWords.map(word => (
-          <div key={word} className="flex justify-between items-center border p-2 rounded bg-white shadow-sm max-w-xl mx-auto">
-            <span>{word}</span>
-            <div className="space-x-2">
-              <button className="mdc-button" onClick={() => handleSelection(word, 'no')}>
-                <span className="mdc-button__label">No</span>
-              </button>
-              <button className="mdc-button" onClick={() => handleSelection(word, 'maybe')}>
-                <span className="mdc-button__label">Maybe</span>
-              </button>
-              <button className="mdc-button mdc-button--raised" onClick={() => handleSelection(word, 'yes')}>
-                <span className="mdc-button__label">Yes</span>
-              </button>
-            </div>
-          </div>
-        ))}
+      <h2 className="text-xl font-semibold mb-6">Step 1: Choose your word preferences</h2>
+      <p className="text-2xl font-medium mb-8">{WORDS[index]}</p>
+      <div className="flex justify-center gap-4">
+        <button onClick={() => handleAnswer('yes')} className="px-4 py-2 bg-green-500 text-white rounded">Yes</button>
+        <button onClick={() => handleAnswer('maybe')} className="px-4 py-2 bg-yellow-400 text-white rounded">Maybe</button>
+        <button onClick={() => handleAnswer('no')} className="px-4 py-2 bg-gray-400 text-white rounded">No</button>
       </div>
-      <button className="mt-6 mdc-button mdc-button--raised" onClick={() => onComplete(responses)}>
-        <span className="mdc-button__label">Continue</span>
-      </button>
+      <p className="mt-6 text-sm text-gray-600">{index + 1} of {WORDS.length}</p>
     </div>
   );
 };

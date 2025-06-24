@@ -1,33 +1,39 @@
+
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const StepThree = ({ words, onComplete }) => {
-  const [rankedWords, setRankedWords] = useState([...words]);
+  const [items, setItems] = useState(words);
 
   const handleDragEnd = (result) => {
-    const { source, destination } = result;
-    if (!destination) return;
-    const updated = [...rankedWords];
-    const [moved] = updated.splice(source.index, 1);
-    updated.splice(destination.index, 0, moved);
-    setRankedWords(updated);
+    if (!result.destination) return;
+    const reordered = Array.from(items);
+    const [movedItem] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, movedItem);
+    setItems(reordered);
   };
 
   return (
     <div className="text-center">
-      <h2 className="mdc-typography--headline6 mb-4">Step 3: Rank Your Selections</h2>
+      <h2 className="text-xl font-semibold mb-6">Step 3: Rank your words</h2>
+      <p className="mb-4 text-gray-600">Drag and drop to reorder your preferred words</p>
+
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId="ranking">
+        <Droppable droppableId="wordList">
           {(provided) => (
-            <ul className="space-y-2 max-w-md mx-auto bg-white p-4 rounded shadow" {...provided.droppableProps} ref={provided.innerRef}>
-              {rankedWords.map((word, index) => (
+            <ul
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="bg-white shadow rounded p-4 mb-6 space-y-2"
+            >
+              {items.map((word, index) => (
                 <Draggable key={word} draggableId={word} index={index}>
                   {(provided) => (
                     <li
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      className="p-2 border rounded bg-gray-50"
+                      className="p-2 bg-gray-100 rounded shadow-sm text-left"
                     >
                       {word}
                     </li>
@@ -39,8 +45,12 @@ const StepThree = ({ words, onComplete }) => {
           )}
         </Droppable>
       </DragDropContext>
-      <button className="mt-6 mdc-button mdc-button--raised" onClick={() => onComplete(rankedWords)}>
-        <span className="mdc-button__label">Finish</span>
+
+      <button
+        onClick={() => onComplete(items)}
+        className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+      >
+        Continue
       </button>
     </div>
   );
