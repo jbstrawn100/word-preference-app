@@ -1,7 +1,24 @@
 import React, { useState } from 'react';
 
 const StepOne = ({ onComplete }) => {
-  const allWords = [/* word list */];
+  const allWords = ["Adventurous", "Bold", "Daring", "Risk-taking", "Edgy", "Experimental",
+  "Energetic", "Disruptive", "Visionary", "Curious", "Safe", "Reliable",
+  "Cautious", "Stable", "Secure", "Predictable", "Consistent", "Steady",
+  "Traditional", "Conservative", "Approachable", "Friendly", "Warm",
+  "Inviting", "Down-to-earth", "Welcoming", "Personal", "Humble", "Simple",
+  "Genuine", "Exclusive", "Premium", "Elite", "Private", "Sophisticated",
+  "Refined", "Discerning", "Niche", "Upscale", "Selective", "Bold (Visual)",
+  "Loud", "Vibrant", "Expressive", "Eye-catching", "Confident", "Brash",
+  "Dynamic", "Assertive", "Dramatic", "Subtle", "Understated", "Soft",
+  "Elegant", "Reserved", "Nuanced", "Polished", "Calm", "Sleek", "Tasteful",
+  "Casual", "Relaxed", "Informal", "Laid-back", "Playful", "Fun",
+  "Spontaneous", "Easygoing", "Unpretentious", "Lighthearted", "Elegant",
+  "Formal", "Classy", "Graceful", "Cultured", "High-end", "Poised",
+  "Well-crafted", "Sophisticated", "Serene", "Detailed", "Precise",
+  "Articulate", "Complex", "Thoughtful", "Analytical", "Logical",
+  "Thorough", "Meticulous", "Technical", "Minimalist", "Clean",
+  "Streamlined", "Simple", "Modern", "Intuitive", "Essential", "Quiet",
+  "Balanced", "Clear"];
   const [responses, setResponses] = useState({ yes: [], maybe: [], no: [] });
 
   const handleSelection = (word, category) => {
