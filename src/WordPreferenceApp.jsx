@@ -37,12 +37,6 @@ const WelcomeScreen = ({ onStart }) => {
     }
     localStorage.setItem('userName', name);
     localStorage.setItem('userEmail', email);
-    
-    fetch('https://script.google.com/macros/s/AKfycbx24MLWZAOp6tSpHBEovq9irvUib8tRRsKYz6csLyOKiStxNIKjGc3vPak5Drol6PSi6g/exec', {
-      method: 'POST',
-      body: JSON.stringify({ name, email, event: 'started' }),
-      headers: { 'Content-Type': 'application/json' },
-    });
     onStart();
   };
 
@@ -95,6 +89,14 @@ const WordPreferenceApp = () => {
   };
 
   const handleStepTwoComplete = (selectedWords) => {
+    if (selectedWords.length > 20) {
+      setFinalChoices(selectedWords);
+      setStep(2.25); // new step for refinement
+    } else {
+      setFinalChoices(selectedWords);
+      setStep(2.5);
+    }
+}
     setFinalChoices(selectedWords);
     setStep(2.5);
   };
@@ -143,7 +145,16 @@ const WordPreferenceApp = () => {
             onComplete={handleStepTwoComplete}
           />
         )}
-        {step === 2.5 && (
+        {step === 2.25 && (
+  <StepTwo
+    words={finalChoices}
+    onComplete={(refinedChoices) => {
+      setFinalChoices(refinedChoices);
+      setStep(2.5);
+    }}
+  />
+)}
+{step === 2.5 && (
           <ReviewStep
             title="Step 2 Preferences"
             words={finalChoices}
