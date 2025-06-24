@@ -30,8 +30,23 @@ const ReviewStep = ({ title, words, onBack, onNext }) => (
   </div>
 );
 
+const WelcomeScreen = ({ onStart }) => (
+  <div className="text-center mt-20">
+    <h1 className="text-3xl font-bold mb-4">Brand Characteristics Exercise</h1>
+    <p className="text-lg text-gray-700 mb-8 max-w-md mx-auto">
+      The goal of this exercise is to narrow your list of potential attributes so you can better understand who you are as a brand.
+    </p>
+    <button
+      onClick={onStart}
+      className="px-6 py-3 bg-blue-600 text-white text-lg rounded hover:bg-blue-700"
+    >
+      Let's Get Started
+    </button>
+  </div>
+);
+
 const WordPreferenceApp = () => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const [responses, setResponses] = useState({ yes: [], maybe: [], no: [] });
   const [finalChoices, setFinalChoices] = useState([]);
   const [rankedWords, setRankedWords] = useState([]);
@@ -51,8 +66,14 @@ const WordPreferenceApp = () => {
     setStep(4);
   };
 
+  // ✅ Filter only valid words from Step One for ranking
+  const validFinalChoices = finalChoices.filter(
+    word => responses.yes.includes(word) || responses.maybe.includes(word)
+  );
+
   return (
     <div className="p-6 max-w-xl mx-auto font-sans text-gray-800">
+      {step === 0 && <WelcomeScreen onStart={() => setStep(1)} />}
       {step === 1 && <StepOne onComplete={handleStepOneComplete} />}
       {step === 1.5 && (
         <ReviewStep
@@ -62,7 +83,12 @@ const WordPreferenceApp = () => {
           onNext={() => setStep(2)}
         />
       )}
-      {step === 2 && <StepTwo words={[...responses.yes, ...responses.maybe]} onComplete={handleStepTwoComplete} />}
+      {step === 2 && (
+        <StepTwo
+          words={[...responses.yes, ...responses.maybe]}
+          onComplete={handleStepTwoComplete}
+        />
+      )}
       {step === 2.5 && (
         <ReviewStep
           title="Step 2 Preferences"
@@ -71,7 +97,12 @@ const WordPreferenceApp = () => {
           onNext={() => setStep(3)}
         />
       )}
-      {step === 3 && <StepThree words={finalChoices} onComplete={handleStepThreeComplete} />}
+      {step === 3 && (
+        <StepThree
+          words={validFinalChoices}
+          onComplete={handleStepThreeComplete}
+        />
+      )}
       {step === 4 && <Result selectedWords={rankedWords} />}
     </div>
   );

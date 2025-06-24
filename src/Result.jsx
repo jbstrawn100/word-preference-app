@@ -1,4 +1,5 @@
 
+// Result.jsx
 import React, { useState } from 'react';
 
 const Result = ({ selectedWords }) => {
@@ -21,7 +22,12 @@ const Result = ({ selectedWords }) => {
 
       <ul className="bg-white shadow rounded p-4 mb-6 space-y-1 text-left max-w-md mx-auto">
         {selectedWords.map((word, i) => (
-          <li key={i} className="p-1 border-b last:border-none">{word}</li>
+          <li
+            key={i}
+            className={`p-1 border-b last:border-none ${i < 7 ? 'bg-green-100 font-semibold' : ''}`}
+          >
+            {word}
+          </li>
         ))}
       </ul>
 
