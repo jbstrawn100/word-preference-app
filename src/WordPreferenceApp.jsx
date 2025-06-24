@@ -5,6 +5,7 @@ import StepOne from './StepOne';
 import StepOneReview from './StepOneReview';
 import StepTwo from './StepTwo';
 import StepThree from './StepThree';
+import StepTwoRefinement from './StepTwoRefinement';
 import Result from './Result';
 
 const ReviewStep = ({ title, words, onBack, onNext }) => (
@@ -87,6 +88,18 @@ const WordPreferenceApp = () => {
   };
 
   const handleStepTwoComplete = (selectedWords) => {
+    setFinalChoices(selectedWords);
+    if (selectedWords.length > 20) {
+      setStep(2.75); // route to refinement step
+    } else {
+      setStep(3); // go directly to ranking
+    }
+  };
+
+  const handleRefinementComplete = (refinedWords) => {
+    setFinalChoices(refinedWords);
+    setStep(3);
+  };
     if (selectedWords.length > 20) {
       setFinalChoices(selectedWords);
       setStep(2.25); // new step for refinement
@@ -155,7 +168,11 @@ const WordPreferenceApp = () => {
             onNext={() => setStep(3)}
           />
         )}
-        {step === 3 && (
+        {step === 2.75 && (
+<StepTwoRefinement words={finalChoices} onComplete={handleRefinementComplete} onBack={() => setStep(2)} />
+)}
+
+{step === 3 && (
           <StepThree
             words={validFinalChoices}
             onComplete={handleStepThreeComplete}
