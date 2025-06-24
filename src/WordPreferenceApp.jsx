@@ -35,8 +35,6 @@ const WelcomeScreen = ({ onStart }) => {
       alert('Please enter your name and email to continue.');
       return;
     }
-    localStorage.setItem('userName', name);
-    localStorage.setItem('userEmail', email);
     onStart();
   };
 
@@ -106,11 +104,6 @@ const WordPreferenceApp = () => {
     const name = localStorage.getItem('userName') || '';
     const email = localStorage.getItem('userEmail') || '';
 
-    fetch('https://script.google.com/macros/s/AKfycbx24MLWZAOp6tSpHBEovq9irvUib8tRRsKYz6csLyOKiStxNIKjGc3vPak5Drol6PSi6g/exec', {
-      method: 'POST',
-      body: JSON.stringify({ name, email, selectedWords: ranked }),
-      headers: { 'Content-Type': 'application/json' },
-    });
 
     setStep(4);
 };
