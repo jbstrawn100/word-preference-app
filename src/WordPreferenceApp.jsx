@@ -1,6 +1,8 @@
 
+// WordPreferenceApp.jsx
 import React, { useState } from 'react';
 import StepOne from './StepOne';
+import StepOneReview from './StepOneReview';
 import StepTwo from './StepTwo';
 import StepThree from './StepThree';
 import Result from './Result';
@@ -53,6 +55,11 @@ const WordPreferenceApp = () => {
 
   const handleStepOneComplete = (responses) => {
     setResponses(responses);
+    setStep(1.25);
+  };
+
+  const handleStepOneReviewComplete = (updatedResponses) => {
+    setResponses(updatedResponses);
     setStep(1.5);
   };
 
@@ -66,7 +73,6 @@ const WordPreferenceApp = () => {
     setStep(4);
   };
 
-  // ✅ Filter only valid words from Step One for ranking
   const validFinalChoices = finalChoices.filter(
     word => responses.yes.includes(word) || responses.maybe.includes(word)
   );
@@ -75,11 +81,18 @@ const WordPreferenceApp = () => {
     <div className="p-6 max-w-xl mx-auto font-sans text-gray-800">
       {step === 0 && <WelcomeScreen onStart={() => setStep(1)} />}
       {step === 1 && <StepOne onComplete={handleStepOneComplete} />}
+      {step === 1.25 && (
+        <StepOneReview
+          responses={responses}
+          onBack={() => setStep(1)}
+          onNext={handleStepOneReviewComplete}
+        />
+      )}
       {step === 1.5 && (
         <ReviewStep
           title="Step 1 Selections"
           words={[...responses.yes, ...responses.maybe]}
-          onBack={() => setStep(1)}
+          onBack={() => setStep(1.25)}
           onNext={() => setStep(2)}
         />
       )}
