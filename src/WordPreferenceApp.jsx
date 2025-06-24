@@ -107,10 +107,10 @@ const WordPreferenceApp = () => {
       setFinalChoices(selectedWords);
       setStep(2.5);
     }
-}
+{
     setFinalChoices(selectedWords);
     setStep(2.5);
-  };
+};
 
   const handleStepThreeComplete = (ranked) => {
     setRankedWords(ranked);
