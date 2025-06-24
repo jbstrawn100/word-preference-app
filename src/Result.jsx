@@ -1,86 +1,37 @@
+import React from 'react';
 
-// Result.jsx
-import React, { useState } from 'react';
-
-const Result = ({ selectedWords }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [downloaded, setDownloaded] = useState(false);
+const Result = ({ selectedWords, hideEmailInput }) => {
+  const topWords = selectedWords.slice(0, 7);
 
   const handleDownload = () => {
-    if (!email) {
-      alert('Please enter your email to download the file.');
-      return;
-    }
-
-    fetch('https://script.google.com/macros/s/AKfycbx24MLWZAOp6tSpHBEovq9irvUib8tRRsKYz6csLyOKiStxNIKjGc3vPak5Drol6PSi6g/exec', {
-      method: 'POST',
-      body: JSON.stringify({ name, email }),
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.result === 'success') {
-          const csvContent = 'data:text/csv;charset=utf-8,' + selectedWords.join('\n');
-          const encodedUri = encodeURI(csvContent);
-          const link = document.createElement('a');
-          link.setAttribute('href', encodedUri);
-          link.setAttribute('download', `${name || 'user'}_selected-words.csv`);
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-
-          setDownloaded(true);
-        } else {
-          alert('Failed to log your submission. Please try again.');
-        }
-      })
-      .catch(error => {
-        console.error('Logging failed:', error);
-        alert('An error occurred. Please try again later.');
-      });
+    const name = localStorage.getItem('userName') || 'user';
+    const blob = new Blob([selectedWords.join(', ')], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${name}_selected-words.csv`;
+    a.click();
   };
 
   return (
-    <div className="text-center">
-      <h2 className="text-xl font-semibold mb-6">Your Top Words</h2>
-
-      <ul className="bg-white shadow rounded p-4 mb-6 space-y-1 text-left max-w-md mx-auto">
+    <div className="text-center max-w-xl mx-auto">
+      <h2 className="mdc-typography--headline6 mb-4">Your Results</h2>
+      <div className="space-y-2 mb-6">
         {selectedWords.map((word, i) => (
-          <li
-            key={i}
-            className={`p-1 border-b last:border-none ${i < 7 ? 'bg-green-100 font-semibold' : ''}`}
-          >
+          <div key={i} className={`p-2 rounded ${i < 7 ? 'bg-green-100 font-bold' : 'bg-gray-50'}`}>
             {word}
-          </li>
+          </div>
         ))}
-      </ul>
-
-      <input
-        type="text"
-        placeholder="Enter your name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        className="px-4 py-2 border rounded mb-2 w-full max-w-xs"
-      />
-      <input
-        type="email"
-        placeholder="Enter your email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="px-4 py-2 border rounded mb-4 w-full max-w-xs"
-      />
-
-      <button
-        onClick={handleDownload}
-        className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-      >
-        Download CSV
+      </div>
+      {!hideEmailInput ? (
+        <>
+          <input className="mb-2 w-full p-2 border rounded" placeholder="Name" />
+          <input className="mb-4 w-full p-2 border rounded" placeholder="Email" />
+        </>
+      ) : null}
+      <button className="mdc-button mdc-button--raised" onClick={handleDownload}>
+        <span className="mdc-button__label">Download Results</span>
       </button>
-
-      {downloaded && (
-        <p className="mt-4 text-green-600 font-medium">Your download has started. Thank you!</p>
-      )}
     </div>
   );
 };
