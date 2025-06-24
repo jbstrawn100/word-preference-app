@@ -49,7 +49,7 @@ const WelcomeScreen = ({ onStart }) => {
 
       <button
         onClick={handleStart}
-        className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
       >
         Let's Get Started
       </button>
