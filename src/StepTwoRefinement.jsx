@@ -2,12 +2,8 @@
 import React, { useState } from 'react';
 
 const StepTwoRefinement = ({ words, onComplete, onBack }) => {
-  const [selected, setSelected] = useState([]);
-
-  const handleSelect = (word) => {
-    if (selected.includes(word)) return;
-    setSelected((prev) => [...prev, word]);
-  };
+  const [index, setIndex] = useState(0);
+  const [selections, setSelections] = useState([]);
 
   const pairs = [];
   for (let i = 0; i < words.length - 1; i += 2) {
@@ -17,42 +13,37 @@ const StepTwoRefinement = ({ words, onComplete, onBack }) => {
     pairs.push([words[words.length - 1]]);
   }
 
+  const handleSelect = (word) => {
+    setSelections([...selections, word]);
+    if (index + 1 < pairs.length) {
+      setIndex(index + 1);
+    } else {
+      onComplete(selections.concat(word));
+    }
+  };
+
   return (
     <div className="text-center">
       <h2 className="text-xl font-semibold mb-4">Refine Your Selections</h2>
-      <p className="mb-4">Choose the word from each pair that best fits your brand.</p>
-      <div className="grid gap-4 mb-6">
-        {pairs.map(([a, b], i) => (
-          <div key={i} className="flex justify-center gap-6">
-            <button
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-              onClick={() => handleSelect(a)}
-            >
-              {a}
-            </button>
-            {b && (
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                onClick={() => handleSelect(b)}
-              >
-                {b}
-              </button>
-            )}
-          </div>
+      <p className="mb-4">Choose the word that best represents your brand.</p>
+      <div className="flex justify-center gap-6 mb-6">
+        {pairs[index].map((word) => (
+          <button
+            key={word}
+            onClick={() => handleSelect(word)}
+            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+          >
+            {word}
+          </button>
         ))}
       </div>
-      <div className="flex justify-center gap-4">
+      <p className="text-sm text-gray-600">Pair {index + 1} of {pairs.length}</p>
+      <div className="mt-6">
         <button
           onClick={onBack}
-          className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+          className="px-4 py-2 text-sm bg-gray-500 text-white rounded hover:bg-gray-600"
         >
           Back
-        </button>
-        <button
-          onClick={() => onComplete(selected)}
-          className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-        >
-          Continue
         </button>
       </div>
     </div>
