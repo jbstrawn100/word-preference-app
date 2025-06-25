@@ -9,7 +9,11 @@ const Result = ({ selectedWords }) => {
         {selectedWords.map((word, index) => (
           <li
             key={index}
-            className={\`p-2 border-b last:border-none \${index < 7 ? 'bg-green-100 font-semibold' : ''}\`}
+            className={
+              index < 7
+                ? 'p-2 border-b last:border-none bg-green-100 font-semibold'
+                : 'p-2 border-b last:border-none'
+            }
           >
             {word}
           </li>
@@ -27,8 +31,9 @@ const Result = ({ selectedWords }) => {
 };
 
 const generateCSV = (words) => {
-  const csvContent = 'data:text/csv;charset=utf-8,' + words.join(',\n');
+  const csvContent = 'data:text/csv;charset=utf-8,' + words.join(',\\n');
   return encodeURI(csvContent);
 };
 
 export default Result;
+
